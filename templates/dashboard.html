@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study Sync | Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<script src="{{ url_for('static', filename='js/chart.umd.js') }}"></script></head>
+<body class="app">
+<nav>
+  <h1 class="brand">Study<span>Sync</span></h1>
+  <a href="#home" class="on">Home</a><a href="#log">Log Session</a><a href="#progress">Progress</a>
+  <a href="#goals">Goals</a><a href="#summary">Summary</a>
+</nav>
+<main>
+  <div class="top" id="home">
+    <div><h2>Welcome back, <span id="who">{{ email }}</span></h2><small id="weekLabel"></small></div>
+    <div><a class="muted" href="{{ url_for('logout') }}">Sign out</a><span class="av" id="av"></span></div>
+  </div>
+
+  <div class="tiles" id="summary">
+    <div class="tile"><div class="l">Total this week</div><div class="v" id="tWeek">0 h</div><div class="s" id="tWeekSub"></div></div>
+    <div class="tile"><div class="l">Daily average</div><div class="v" id="tAvg">0 h</div><div class="s" id="tAvgSub"></div></div>
+    <div class="tile"><div class="l">Current streak</div><div class="v" id="tStreak">0 days</div><div class="s" id="tBest"></div></div>
+    <div class="tile"><div class="l">Sessions logged</div><div class="v" id="tCount">0</div><div class="s" id="tUnits"></div></div>
+  </div>
+
+  <div class="grid" id="progress">
+    <div class="card"><h3>Weekly progress: hours studied per day</h3>
+      <div class="chartbox"><canvas id="weekly"></canvas></div>
+      <p class="empty" id="weeklyEmpty" hidden>No sessions yet this week. Log your first session to see your chart.</p></div>
+    <div class="card" id="log"><h3 id="formTitle">Quick log</h3>
+      <label for="subject">Unit</label><select class="in" id="subject"></select>
+      <div class="row"><div><label for="minutes">Duration (minutes)</label><input class="in" id="minutes" type="number" min="1" max="720" value="60"></div>
+      <div><label for="start">Date and time</label><input class="in" id="start" type="datetime-local"></div></div>
+      <button class="btn" id="save">Save session</button>
+      <button class="btn ghost" id="cancel" hidden>Cancel edit</button>
+      <div class="msg" id="msg"></div>
+      <div class="row addsub"><input class="in" id="newSub" placeholder="Add a new unit"><button class="btn small" id="addSub">Add</button></div>
+      <h3 class="mt" id="goals">Weekly goal</h3>
+      <div class="muted small" id="goalText">No goal set</div>
+      <div class="bar"><i id="goalBar" style="width:0%"></i></div>
+      <div class="goalpct" id="goalPct"></div>
+      <div class="row addsub"><input class="in" id="wGoal" type="number" min="1" max="168" step="0.5" placeholder="Weekly target (hours)"><button class="btn small" id="setW">Set</button></div>
+      <div class="row addsub"><input class="in" id="mGoal" type="number" min="1" max="744" step="1" placeholder="Monthly target (hours)"><button class="btn small" id="setM">Set</button></div>
+    </div>
+  </div>
+
+  <div class="card"><h3>Monthly trend: weekly study hours (last 8 weeks)</h3>
+    <div class="chartbox short"><canvas id="monthly"></canvas></div></div>
+
+  <div class="card mt"><div class="listhead"><h3>Recent sessions</h3>
+    <select class="in slim" id="filter"><option value="">All units</option></select></div>
+    <table class="list"><thead><tr><th>Unit</th><th>When</th><th>Duration</th><th></th></tr></thead><tbody id="rows"></tbody></table>
+    <p class="empty" id="rowsEmpty" hidden>Nothing logged yet.</p></div>
+</main>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body></html>
